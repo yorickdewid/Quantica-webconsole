@@ -2,7 +2,6 @@ $(document).ready(function() {
   function checkStatus() {
     $.ajax({
       url: "http://localhost:4017/",
-
       dataType: 'json',
       success : function (response) {
           if (response.status == "SERVER_READY") {
@@ -27,8 +26,7 @@ $(document).ready(function() {
           url: 'http://localhost:4017/'+$command,
           dataType: 'json',
           type: 'POST',
-          data: $postdata,
-          processData: false,
+          data: {'rdata':$postdata},
           success: function(data, textStatus, jQxhr){
               $('#messages').append('<li class="received"><span>Received:</span>Data stored in ' + data.quid + '</li>');
               $("#messages").scrollTop($("#messages")[0].scrollHeight);
@@ -51,7 +49,6 @@ $(document).ready(function() {
         $.ajax({
           url: 'http://localhost:4017/'+$postdata,
           dataType: 'json',
-          processData: false,
           success: function(data, textStatus, jQxhr){
               $('#messages').append('<li class="received"><span>Received:</span>Record: ' + data.data + '</li>');
               $("#messages").scrollTop($("#messages")[0].scrollHeight);
@@ -75,8 +72,7 @@ $(document).ready(function() {
           url: 'http://localhost:4017/'+$command,
           dataType: 'json',
           type: 'POST',
-          data: $postdata,
-          processData: false,
+          data: {'pdata':$postdata, 'check':1, 'dsub':'OK'},
           success: function(data, textStatus, jQxhr){
               $('#messages').append('<li class="received"><span>Received:</span>' + data.description + '</li>');
           },
@@ -111,7 +107,6 @@ $(document).ready(function() {
         $.ajax({
           url: 'http://localhost:4017/'+cmd,
           dataType: 'json',
-          processData: false,
           success: function(data, textStatus, jQxhr){
               $('#messages').append('<li class="received"><span>Received:</span>' + data.description + '</li>');
               $("#messages").scrollTop($("#messages")[0].scrollHeight);
