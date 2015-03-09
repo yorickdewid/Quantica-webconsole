@@ -44,6 +44,30 @@ $(document).ready(function() {
               }
           }
         });
+      } else if ($command == 'sha1') {
+        $('#messages').append('<li class="sent"><span>Sent:</span>' + $command +'</li>');
+        $.ajax({
+          url: 'http://localhost:4017/'+$command,
+          dataType: 'json',
+          type: 'POST',
+          data: {'rdata':$postdata},
+          success: function(data, textStatus, jQxhr){
+              $('#messages').append('<li class="received"><span>Received:</span>Data hashed as ' + data.hash + '</li>');
+              $("#messages").scrollTop($("#messages")[0].scrollHeight);
+          },
+          error: function(jqXhr, textStatus, errorThrown){
+              console.log(errorThrown);
+              if (errorThrown == 'Not Found') {
+                try {
+                  var res = JSON.parse(jqXhr.responseText);
+                  $('#messages').append('<li class="received"><span>Received:</span>' + res.description + '</li>');
+                  $("#messages").scrollTop($("#messages")[0].scrollHeight);
+                } catch(e) {
+                  console.log(e);
+                }
+              }
+          }
+        });
       } else if ($command == 'quid') {
         $('#messages').append('<li class="sent"><span>Sent:</span>Retrieve data from key '+$postdata+'</li>');
         $.ajax({
@@ -72,7 +96,7 @@ $(document).ready(function() {
           url: 'http://localhost:4017/'+$command,
           dataType: 'json',
           type: 'POST',
-          data: {'pdata':$postdata, 'check':1, 'dsub':'OK'},
+          data: {'pdata':$postdata},
           success: function(data, textStatus, jQxhr){
               $('#messages').append('<li class="received"><span>Received:</span>' + data.description + '</li>');
           },
